@@ -1,0 +1,33 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable asteroid1
+drawable asteroid2
+drawable asteroid3
+drawable asteroid4
+drawable etoilefond
+drawable explosion
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable pad_center
+drawable pad_exterior
+drawable tie
+id frameLayout2
+id imageView11
+id imageView12
+id imageView13
+id imageView14
+id imageView15
+id imageView3
+id imageView7
+id imageView9
+id main
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.Jeux_etoiles
+style Theme.Jeux_etoiles
+xml backup_rules
+xml data_extraction_rules
