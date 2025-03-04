@@ -11,6 +11,10 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.animation.ObjectAnimator;
 import android.view.animation.TranslateAnimation;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
             float rd_x = (float) (Math.random()*500);
             float rd_y = (float) (Math.random()*1000);
-            ObjectAnimator animator = ObjectAnimator.ofFloat(meteorite4, "translationY",rd_x, rd_y);
-            ObjectAnimator animato = ObjectAnimator.ofFloat(meteorite3, "translationX",rd_y, rd_x);
+            //ObjectAnimator animator = ObjectAnimator.ofFloat(meteorite4, "translationY",rd_x, rd_y);
+            Path path = new Path();
+            path.arcTo(0f, 0f , 1000f, 1000f, 0f , −359f, true);
+            animatorsOfAsteroid = ObjectAnimator.ofFloat(imageViewOfAsteroid, View.X, View.Y, path);
+            animatorsOfAsteroid.setDuration(4000);
+            animatorsOfAsteroid.setRepeatCount(Animation.INFINITE);
+            animatorsOfAsteroid.start ();
+
             animator.setDuration(1000); // Durée de l'animation en millisecondes
             animator.start();
 
@@ -77,6 +87,39 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         return true;
+        }
+
+    public boolean sontEnCollision(ImageView firstView, ImageView secondView) {
+        int [] firstPosition = new int[2];
+        int [] secondPosition = new int[2];
+        firstView .getLocationOnScreen(firstPosition);
+        secondView.getLocationOnScreen(secondPosition);
+
+        Rect rectFirstView = new Rect(firstPosition [0], firstPosition [1],
+                firstPosition [0] + firstView .getMeasuredWidth(), firstPosition [1] + firstView .getMeasuredHeight());
+        Rect rectSecondView = new Rect(secondPosition[0], secondPosition[1],
+                secondPosition[0] + secondView.getMeasuredWidth(), secondPosition[1] + secondView.getMeasuredHeight());
+        return(rectFirstView. intersect (rectSecondView));
+        }
+    public class MainActivity extends Activity implements SensorEventListener {
+        private SensorManager mSensorManager;
+        private Sensor accelerometer;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity main);
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR SERVICE); // on recupere l accelerometre a partir du SensorManager
+            accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE ACCELEROMETER);// on associe l ecouteur d’evenements au SensorManager
+            mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR DELAY NORMAL);
+            }
+        @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {// TODO Auto−generated method stub
+            }
+        @Override
+    public void onSensorChanged(SensorEvent event) {// TODO Auto−generated method stub
+            float gammaX = event.values[0], gammaY = event.values[1], gammaZ = event.values[2];
+            Log.d(”Valeurs accelerometre”,gammaX+”,”+gammaY+”,”+gammaZ);
+            }
         }
 
 }
